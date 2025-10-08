@@ -1,0 +1,158 @@
+.advanced-data-table {
+  .table-header {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .filter-section {
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .table-container {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  // Improved pagination
+  .pagination-button {
+    transition: all 0.2s ease;
+    
+    &:hover:not(:disabled) {
+      background-color: #f3f4f6;
+      transform: translateY(-1px);
+    }
+    
+    &.active {
+      background-color: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+  }
+
+  // Export buttons
+  .export-button {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    &.excel:hover {
+      background-color: #059669;
+    }
+    
+    &.pdf:hover {
+      background-color: #dc2626;
+    }
+  }
+
+  // Selection styles
+  .selected-row {
+    background-color: #eff6ff;
+    border-left: 3px solid #3b82f6;
+  }
+
+  .bulk-actions {
+    padding: 0.75rem 1rem;
+    background-color: #f0f9ff;
+    border-bottom: 1px solid #e0f2fe;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // Filter animations
+  .filter-input {
+    transition: all 0.2s ease;
+    
+    &:focus {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+  }
+
+  // Loading state
+  .loading-overlay {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+  }
+
+  // Empty state
+  .empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+    
+    .empty-icon {
+      font-size: 4rem;
+      color: #d1d5db;
+      margin-bottom: 1rem;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .table-controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+    
+    .export-buttons {
+      justify-content: center;
+    }
+    
+    .pagination {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  // Sort indicators
+  .sort-indicator {
+    transition: all 0.2s ease;
+    
+    &.active {
+      color: #3b82f6;
+    }
+  }
+
+  // Badge styles
+  .status-badge {
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    
+    &.success {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    
+    &.warning {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    &.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+    
+    &.info {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+  }
+}

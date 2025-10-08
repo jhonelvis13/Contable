@@ -25,6 +25,15 @@ import { ToastComponent } from './components/toast/toast.component';
 import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 import { SkeletonComponent } from './components/skeleton/skeleton.component';
 import { LoadingOverlayComponent } from './components/loading-overlay/loading-overlay.component';
+import { SimpleChartComponent } from './components/simple-chart/simple-chart.component';
+import { AdvancedDataTableComponent } from './components/advanced-data-table/advanced-data-table.component';
+import { SavedFiltersManagerComponent } from './components/saved-filters-manager/saved-filters-manager.component';
+import { ResizableColumnsManagerComponent } from './components/resizable-columns-manager/resizable-columns-manager.component';
+import { MobileOptimizedTableComponent } from './components/mobile-optimized-table/mobile-optimized-table.component';
+
+// CDK Modules
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -42,16 +51,18 @@ import { LoadingOverlayComponent } from './components/loading-overlay/loading-ov
     ToastContainerComponent,
     SkeletonComponent,
     LoadingOverlayComponent,
+    SimpleChartComponent,
+    AdvancedDataTableComponent,
+    SavedFiltersManagerComponent,
+    ResizableColumnsManagerComponent,
+    MobileOptimizedTableComponent,
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     FormsModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
+    ReactiveFormsModule,
+    DragDropModule,
+    OverlayModule
   ],
   exports: [
     // Components
@@ -69,11 +80,18 @@ import { LoadingOverlayComponent } from './components/loading-overlay/loading-ov
     ToastContainerComponent,
     SkeletonComponent,
     LoadingOverlayComponent,
+    SimpleChartComponent,
+    AdvancedDataTableComponent,
+    SavedFiltersManagerComponent,
+    ResizableColumnsManagerComponent,
+    MobileOptimizedTableComponent,
     
     // Modules
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    DragDropModule,
+    OverlayModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,

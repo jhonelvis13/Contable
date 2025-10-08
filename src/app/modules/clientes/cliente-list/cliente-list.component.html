@@ -2,17 +2,124 @@
 <div class="p-6">
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-800">Clientes</h1>
-    <button
-      (click)="openNewClienteModal()"
-      class="bg-black text-white px-4 py-2 rounded-2xl hover:bg-gray-800 transition-all duration-300"
-    >
-      + Nuevo Cliente
-    </button>
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Clientes</h1>
+      <p class="text-gray-600 mt-1">Gestión de clientes y empresas</p>
+    </div>
+    
+    <!-- Toggle de vista -->
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+        <button
+          (click)="useAdvancedTable = false"
+          [class]="!useAdvancedTable ? 'bg-white text-gray-900 shadow' : 'text-gray-600'"
+          class="px-3 py-1 rounded-md transition-all duration-200 text-sm font-medium">
+          <i class="fas fa-table mr-1"></i>
+          Básica
+        </button>
+        <button
+          (click)="useAdvancedTable = true"
+          [class]="useAdvancedTable ? 'bg-blue-600 text-white shadow' : 'text-gray-600'"
+          class="px-3 py-1 rounded-md transition-all duration-200 text-sm font-medium">
+          <i class="fas fa-table-columns mr-1"></i>
+          Avanzada ✨
+        </button>
+      </div>
+      
+      <div class="flex space-x-3">
+        <button
+          (click)="reloadData()"
+          class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-all duration-300 flex items-center"
+          title="Actualizar datos"
+        >
+          <i class="fas fa-sync-alt mr-2"></i>
+          Actualizar
+        </button>
+        <button
+          (click)="openNewClienteModal()"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 flex items-center"
+        >
+          <i class="fas fa-plus mr-2"></i>
+          Nuevo Cliente
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async); else statsLoading"
+      [data]="{
+        title: 'Total',
+        value: estadisticas.total,
+        icon: 'fas fa-users',
+        iconBgColor: 'bg-blue-100',
+        textColor: 'text-blue-600',
+        subtitle: 'Clientes registrados'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Activos',
+        value: estadisticas.activos,
+        icon: 'fas fa-check-circle',
+        iconBgColor: 'bg-green-100',
+        textColor: 'text-green-600',
+        subtitle: 'Clientes activos'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Inactivos',
+        value: estadisticas.inactivos,
+        icon: 'fas fa-pause-circle',
+        iconBgColor: 'bg-yellow-100',
+        textColor: 'text-yellow-600',
+        subtitle: 'Clientes inactivos'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Empresas',
+        value: estadisticas.empresas,
+        icon: 'fas fa-building',
+        iconBgColor: 'bg-purple-100',
+        textColor: 'text-purple-600',
+        subtitle: 'Clientes empresariales'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Particulares',
+        value: estadisticas.particulares,
+        icon: 'fas fa-user',
+        iconBgColor: 'bg-gray-100',
+        textColor: 'text-gray-600',
+        subtitle: 'Clientes particulares'
+      }">
+    </app-stats-card>
+
+    <!-- Skeleton loading para estadísticas -->
+    <ng-template #statsLoading>
+      <app-skeleton 
+        *ngFor="let item of [1,2,3,4,5]"
+        type="card">
+      </app-skeleton>
+    </ng-template>
   </div>
 
   <!-- Filters -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <!-- Filtros básicos (solo para tabla tradicional) -->
+  <div *ngIf="!useAdvancedTable" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div>
       <label class="text-sm text-gray-600 mb-1 block">Tipo</label>
       <select
@@ -40,10 +147,40 @@
     </div>
   </div>
 
-  <!-- Table -->
-  <div class="bg-white rounded-2xl shadow-md p-6">
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
+  <!-- Tabla Básica (modo tradicional) -->
+  <div *ngIf="!useAdvancedTable" class="bg-white rounded-lg shadow-md p-6">
+    <!-- Loading estado para tabla -->
+    <div *ngIf="isLoadingClientes$ | async" class="space-y-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-medium text-gray-900">Cargando clientes...</h3>
+        <app-loading-spinner type="circular" [size]="20"></app-loading-spinner>
+      </div>
+      
+      <!-- Skeleton para filas de tabla -->
+      <div class="space-y-3">
+        <app-skeleton 
+          type="table"
+          [rows]="6"
+          [columns]="6">
+        </app-skeleton>
+      </div>
+    </div>
+
+    <!-- Tabla con datos -->
+    <div *ngIf="!(isLoadingClientes$ | async)" class="overflow-x-auto">
+      <div *ngIf="filteredClientes.length === 0" class="text-center py-12">
+        <i class="fas fa-users text-gray-300 text-5xl mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No hay clientes</h3>
+        <p class="text-gray-500 mb-6">No se encontraron clientes que coincidan con los filtros aplicados.</p>
+        <button
+          (click)="openNewClienteModal()"
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          <i class="fas fa-plus mr-2"></i>
+          Crear primer cliente
+        </button>
+      </div>
+
+      <table *ngIf="filteredClientes.length > 0" class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
@@ -55,28 +192,120 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let cliente of filteredClientes" class="hover:bg-gray-50 cursor-pointer" (click)="viewDetalle(cliente)">
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ cliente.nombre }}</td>
+          <tr *ngFor="let cliente of filteredClientes" 
+              class="hover:bg-gray-50 cursor-pointer transition-colors duration-200" 
+              (click)="viewDetalle(cliente)">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <i class="fas fa-user text-blue-600"></i>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ cliente.nombre }}</div>
+                  <div class="text-sm text-gray-500">{{ cliente.contacto }}</div>
+                </div>
+              </div>
+            </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cliente.nit }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cliente.tipo }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <app-badge [variant]="cliente.tipo === 'Empresa' ? 'info' : 'secondary'">
+                {{ cliente.tipo }}
+              </app-badge>
+            </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ cliente.telefono }}</td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-                    [class]="cliente.activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+              <app-badge [variant]="cliente.activo ? 'success' : 'error'">
                 {{ cliente.activo ? 'Activo' : 'Inactivo' }}
-              </span>
+              </app-badge>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <button (click)="viewDetalle(cliente); $event.stopPropagation()" 
-                      class="text-blue-600 hover:text-blue-900 mr-4">Ver</button>
-              <button (click)="editCliente(cliente, $event)" 
-                      class="text-indigo-600 hover:text-indigo-900 mr-4">Editar</button>
-              <button (click)="deleteCliente(cliente, $event)" 
-                      class="text-red-600 hover:text-red-900">Eliminar</button>
+              <div class="flex space-x-2">
+                <button 
+                  (click)="viewDetalle(cliente); $event.stopPropagation()" 
+                  class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50 transition-colors"
+                  title="Ver detalles">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button 
+                  (click)="editCliente(cliente, $event)" 
+                  class="text-yellow-600 hover:text-yellow-900 p-1 rounded hover:bg-yellow-50 transition-colors"
+                  title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  (click)="deleteCliente(cliente, $event)" 
+                  class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors"
+                  title="Eliminar">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Tabla Avanzada -->
+  <div *ngIf="useAdvancedTable">
+    <app-advanced-data-table
+      [data]="clientes"
+      [columns]="advancedTableColumns"
+      [loading]="(isLoadingClientes$ | async) || false"
+      [selectable]="true"
+      [searchable]="true"
+      [showPagination]="true"
+      [pageSize]="25"
+      [bulkActions]="bulkActions"
+      [exportOptions]="exportOptions"
+      title="Lista de Clientes"
+      loadingText="Cargando clientes..."
+      emptyMessage="No hay clientes registrados. Crea el primer cliente para comenzar."
+      (rowClick)="onAdvancedRowClick($event)"
+      (selectionChange)="onAdvancedSelectionChange($event)"
+      (bulkActionExecute)="onAdvancedBulkAction($event)">
+      
+      <!-- Slot para acciones personalizadas -->
+      <ng-template #actions let-row="row">
+        <div class="flex items-center space-x-2">
+          <button
+            (click)="advancedViewCliente(row, $event)"
+            class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50 transition-colors"
+            title="Ver detalles">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button
+            (click)="advancedEditCliente(row, $event)"
+            class="text-yellow-600 hover:text-yellow-900 p-1 rounded hover:bg-yellow-50 transition-colors"
+            title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button
+            (click)="advancedDeleteCliente(row, $event)"
+            class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors"
+            title="Eliminar">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </ng-template>
+    </app-advanced-data-table>
+
+    <!-- Info de selección múltiple -->
+    <div *ngIf="selectedRows.length > 0" 
+         class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div class="flex items-center">
+        <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+        <span class="font-semibold text-blue-800">
+          {{ selectedRows.length }} cliente(s) seleccionado(s)
+        </span>
+        <button 
+          (click)="selectedRows = []"
+          class="ml-auto text-blue-600 hover:text-blue-800 text-sm">
+          Limpiar selección
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -89,3 +318,6 @@
   (closeModal)="closeModal()"
   (saveData)="onClienteGuardado($event)">
 </app-cliente-form-modal>
+
+<!-- Toast Container -->
+<app-toast-container></app-toast-container>

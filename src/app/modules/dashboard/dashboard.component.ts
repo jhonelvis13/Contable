@@ -17,13 +17,26 @@ export class DashboardComponent implements OnInit {
     montoFacturado: 0
   };
 
-  barData = [
-    { month: 'Ene', value: 80 },
-    { month: 'Feb', value: 60 },
-    { month: 'Mar', value: 90 },
-    { month: 'Abr', value: 70 },
-    { month: 'May', value: 85 },
-    { month: 'Jun', value: 75 }
+  // Datos para gráficos
+  viajesPorMesData = [
+    { label: 'Ene', value: 45, color: '#3B82F6' },
+    { label: 'Feb', value: 52, color: '#3B82F6' },
+    { label: 'Mar', value: 38, color: '#3B82F6' },
+    { label: 'Abr', value: 61, color: '#3B82F6' },
+    { label: 'May', value: 55, color: '#3B82F6' },
+    { label: 'Jun', value: 67, color: '#3B82F6' }
+  ];
+
+  ingresosPorTipoData = [
+    { label: 'Nacional', value: 65, color: '#10B981' },
+    { label: 'Internacional', value: 35, color: '#3B82F6' }
+  ];
+
+  estadoConductoresData = [
+    { label: 'Activos', value: 28, color: '#10B981' },
+    { label: 'Disponibles', value: 12, color: '#3B82F6' },
+    { label: 'En viaje', value: 16, color: '#F59E0B' },
+    { label: 'Suspendidos', value: 2, color: '#EF4444' }
   ];
 
   ultimosViajes: Viaje[] = [];
@@ -73,5 +86,9 @@ export class DashboardComponent implements OnInit {
 
   navigateToViajes(): void {
     this.router.navigate(['/viajes']);
+  }
+
+  navigateToClientesAdvanced(): void {
+    this.router.navigate(['/clientes/advanced']);
   }
 }

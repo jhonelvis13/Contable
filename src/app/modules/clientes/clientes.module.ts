@@ -8,12 +8,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ClienteListComponent } from './cliente-list/cliente-list.component';
 import { ClienteFormModalComponent } from './cliente-form-modal/cliente-form-modal.component';
 import { ClienteDetalleComponent } from './cliente-detalle/cliente-detalle.component';
+import { ClienteAdvancedListComponent } from './cliente-advanced-list/cliente-advanced-list.component';
 
 @NgModule({
   declarations: [
     ClienteListComponent,
     ClienteFormModalComponent,
-    ClienteDetalleComponent
+    ClienteDetalleComponent,
+    ClienteAdvancedListComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { ClienteDetalleComponent } from './cliente-detalle/cliente-detalle.compo
   exports: [
     ClienteListComponent,
     ClienteFormModalComponent,
-    ClienteDetalleComponent
+    ClienteDetalleComponent,
+    ClienteAdvancedListComponent
   ]
 })
 export class ClientesModule { }

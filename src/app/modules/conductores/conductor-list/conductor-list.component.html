@@ -2,108 +2,134 @@
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
     <div>
-      <h1 class="text-2xl font-bold text-gray-900">Gestión de Conductores</h1>
-      <p class="text-gray-600">Administra los conductores de la empresa</p>
+      <h1 class="text-2xl font-bold text-gray-800">Conductores</h1>
+      <p class="text-gray-600 mt-1">Gestión de conductores y licencias</p>
     </div>
-    <button
-      (click)="abrirModal()"
-      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-      </svg>
-      Nuevo Conductor
-    </button>
+    
+    <!-- Toggle de vista -->
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+        <button
+          (click)="useAdvancedTable = false"
+          [class]="!useAdvancedTable ? 'bg-white text-gray-900 shadow' : 'text-gray-600'"
+          class="px-3 py-1 rounded-md transition-all duration-200 text-sm font-medium">
+          <i class="fas fa-table mr-1"></i>
+          Básica
+        </button>
+        <button
+          (click)="useAdvancedTable = true"
+          [class]="useAdvancedTable ? 'bg-blue-600 text-white shadow' : 'text-gray-600'"
+          class="px-3 py-1 rounded-md transition-all duration-200 text-sm font-medium">
+          <i class="fas fa-table-columns mr-1"></i>
+          Avanzada ✨
+        </button>
+      </div>
+      
+      <div class="flex space-x-3">
+        <button
+          (click)="reloadData()"
+          class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-all duration-300 flex items-center"
+          title="Actualizar datos"
+        >
+          <i class="fas fa-sync-alt mr-2"></i>
+          Actualizar
+        </button>
+        <button
+          (click)="abrirModal()"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 flex items-center"
+        >
+          <i class="fas fa-plus mr-2"></i>
+          Nuevo Conductor
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Estadísticas -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-    <div class="bg-white p-4 rounded-lg shadow border">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Total</p>
-          <p class="text-2xl font-bold text-gray-900">{{ estadisticas.total || 0 }}</p>
-        </div>
-        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
-          </svg>
-        </div>
-      </div>
-    </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async); else statsLoading"
+      [data]="{
+        title: 'Total',
+        value: estadisticas.total || 0,
+        icon: 'fas fa-users',
+        iconBgColor: 'bg-blue-100',
+        textColor: 'text-blue-600',
+        subtitle: 'Conductores registrados'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Activos',
+        value: estadisticas.activos || 0,
+        icon: 'fas fa-check-circle',
+        iconBgColor: 'bg-green-100',
+        textColor: 'text-green-600',
+        subtitle: 'Conductores activos'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Suspendidos',
+        value: estadisticas.suspendidos || 0,
+        icon: 'fas fa-pause-circle',
+        iconBgColor: 'bg-red-100',
+        textColor: 'text-red-600',
+        subtitle: 'Conductores suspendidos'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Con Vehículo',
+        value: estadisticas.conVehiculo || 0,
+        icon: 'fas fa-truck',
+        iconBgColor: 'bg-purple-100',
+        textColor: 'text-purple-600',
+        subtitle: 'Con vehículo asignado'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Sin Vehículo',
+        value: estadisticas.sinVehiculo || 0,
+        icon: 'fas fa-user-clock',
+        iconBgColor: 'bg-gray-100',
+        textColor: 'text-gray-600',
+        subtitle: 'Sin vehículo asignado'
+      }">
+    </app-stats-card>
+    
+    <app-stats-card 
+      *ngIf="!(isLoadingStats$ | async)"
+      [data]="{
+        title: 'Lic. Vencidas',
+        value: estadisticas.licenciasVencidas || 0,
+        icon: 'fas fa-exclamation-triangle',
+        iconBgColor: 'bg-yellow-100',
+        textColor: 'text-yellow-600',
+        subtitle: 'Licencias vencidas'
+      }">
+    </app-stats-card>
 
-    <div class="bg-white p-4 rounded-lg shadow border">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Activos</p>
-          <p class="text-2xl font-bold text-green-600">{{ estadisticas.activos || 0 }}</p>
-        </div>
-        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-          <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-lg shadow border">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Disponibles</p>
-          <p class="text-2xl font-bold text-blue-600">{{ estadisticas.disponibles || 0 }}</p>
-        </div>
-        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-lg shadow border">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Suspendidos</p>
-          <p class="text-2xl font-bold text-red-600">{{ estadisticas.suspendidos || 0 }}</p>
-        </div>
-        <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-          <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-lg shadow border">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Licencia Médica</p>
-          <p class="text-2xl font-bold text-yellow-600">{{ estadisticas.licenciaMedica || 0 }}</p>
-        </div>
-        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-          <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-lg shadow border">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium text-gray-600">Licencias por Vencer</p>
-          <p class="text-2xl font-bold text-red-600">{{ estadisticas.licenciasPorVencer || 0 }}</p>
-        </div>
-        <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-          <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-        </div>
-      </div>
-    </div>
+    <!-- Skeleton loading para estadísticas -->
+    <ng-template #statsLoading>
+      <app-skeleton 
+        *ngFor="let item of [1,2,3,4,5,6]"
+        type="card">
+      </app-skeleton>
+    </ng-template>
   </div>
 
-  <!-- Filtros -->
-  <div class="bg-white p-4 rounded-lg shadow border mb-6">
+  <!-- Filtros básicos (solo para tabla tradicional) -->
+  <div *ngIf="!useAdvancedTable" class="bg-white p-4 rounded-lg shadow border mb-6">
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
@@ -179,8 +205,8 @@
     </div>
   </div>
 
-  <!-- Tabla de Conductores -->
-  <div class="bg-white rounded-lg shadow border overflow-hidden">
+  <!-- Tabla Básica de Conductores -->
+  <div *ngIf="!useAdvancedTable" class="bg-white rounded-lg shadow border overflow-hidden">
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
@@ -306,6 +332,67 @@
           (click)="limpiarFiltros()"
           class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
           Limpiar filtros
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla Avanzada de Conductores -->
+  <div *ngIf="useAdvancedTable">
+    <app-advanced-data-table
+      [data]="conductores"
+      [columns]="advancedTableColumns"
+      [loading]="(isLoadingConductores$ | async) || false"
+      [selectable]="true"
+      [searchable]="true"
+      [showPagination]="true"
+      [pageSize]="25"
+      [bulkActions]="bulkActions"
+      [exportOptions]="exportOptions"
+      title="Lista de Conductores"
+      loadingText="Cargando conductores..."
+      emptyMessage="No hay conductores registrados. Crea el primer conductor para comenzar."
+      (rowClick)="onAdvancedRowClick($event)"
+      (selectionChange)="onAdvancedSelectionChange($event)"
+      (bulkActionExecute)="onAdvancedBulkAction($event)">
+      
+      <!-- Slot para acciones personalizadas -->
+      <ng-template #actions let-row="row">
+        <div class="flex items-center space-x-2">
+          <button
+            (click)="advancedViewConductor(row, $event)"
+            class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50 transition-colors"
+            title="Ver detalles">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button
+            (click)="advancedEditConductor(row, $event)"
+            class="text-yellow-600 hover:text-yellow-900 p-1 rounded hover:bg-yellow-50 transition-colors"
+            title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button
+            (click)="advancedDeleteConductor(row, $event)"
+            class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors"
+            title="Eliminar">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </ng-template>
+    </app-advanced-data-table>
+
+    <!-- Info de selección múltiple -->
+    <div *ngIf="selectedRows.length > 0" 
+         class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div class="flex items-center">
+        <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+        <span class="font-semibold text-blue-800">
+          {{ selectedRows.length }} conductor(es) seleccionado(s)
+        </span>
+        <button 
+          (click)="selectedRows = []"
+          class="ml-auto text-blue-600 hover:text-blue-800 text-sm">
+          Limpiar selección
         </button>
       </div>
     </div>
