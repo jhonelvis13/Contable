@@ -1,0 +1,44 @@
+<!-- src/app/shared/components/toast/toast.component.html -->
+<div [class]="toastClasses" [@slideIn]>
+  <!-- Progress bar (si está habilitado) -->
+  <div 
+    *ngIf="notification.showProgress && notification.duration && notification.duration > 0" 
+    class="toast-progress">
+    <div 
+      class="toast-progress-bar" 
+      [style.width.%]="progress">
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="toast-content">
+    <!-- Icono -->
+    <div class="toast-icon">
+      <i [class]="iconClass"></i>
+    </div>
+
+    <!-- Texto -->
+    <div class="toast-text">
+      <div class="toast-title">{{ notification.title }}</div>
+      <div class="toast-message">{{ notification.message }}</div>
+    </div>
+
+    <!-- Botón de cerrar -->
+    <button 
+      class="toast-close-btn"
+      (click)="onDismiss()"
+      aria-label="Cerrar notificación">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Acciones (si existen) -->
+  <div *ngIf="notification.actions && notification.actions.length > 0" class="toast-actions">
+    <button
+      *ngFor="let action of notification.actions"
+      [class]="'toast-action-btn toast-action-' + (action.style || 'secondary')"
+      (click)="onActionClick(action)">
+      {{ action.label }}
+    </button>
+  </div>
+</div>

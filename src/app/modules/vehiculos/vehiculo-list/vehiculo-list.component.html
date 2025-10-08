@@ -1,0 +1,412 @@
+<div class="p-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Gestión de Vehículos</h1>
+      <p class="text-gray-600">Administra la flota de vehículos de la empresa</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button
+        (click)="abrirModal()"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Nuevo Vehículo
+      </button>
+      
+      <!-- Botones de demostración Toast -->
+      <div class="flex gap-1 ml-4">
+        <button
+          (click)="demoToastSuccess()"
+          class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Toast de éxito">
+          ✓ Éxito
+        </button>
+        <button
+          (click)="demoToastError()"
+          class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Toast de error">
+          ✗ Error
+        </button>
+        <button
+          (click)="demoToastWarning()"
+          class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Toast de advertencia">
+          ⚠ Advertencia
+        </button>
+        <button
+          (click)="demoToastInfo()"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Toast de información">
+          ℹ Info
+        </button>
+        <button
+          (click)="demoToastPersistent()"
+          class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Toast persistente">
+          📌 Persistente
+        </button>
+      </div>
+      
+      <!-- Botones de demostración Loading States -->
+      <div class="flex gap-1 ml-4 border-l pl-4">
+        <button
+          (click)="demoSkeletonTable()"
+          class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Skeleton de tabla">
+          💀 Skeleton
+        </button>
+        <button
+          (click)="demoSpinnerOperation()"
+          class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Spinner de operación">
+          ⟲ Spinner
+        </button>
+        <button
+          (click)="demoProgressUpload()"
+          class="bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Barra de progreso">
+          📊 Progreso
+        </button>
+        <button
+          (click)="demoOverlayLoading()"
+          class="bg-pink-500 hover:bg-pink-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Overlay de carga">
+          🔒 Overlay
+        </button>
+        <button
+          (click)="demoLoadingWithError()"
+          class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded text-sm transition-colors"
+          title="Demo: Carga con error">
+          ⚡ Error Loading
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+    <!-- Mostrar skeleton mientras cargan las estadísticas -->
+    <ng-container *ngIf="isLoadingEstadisticas$ | async; else statsContent">
+      <app-skeleton 
+        type="card" 
+        [showHeader]="false"
+        [lines]="2"
+        [lineWidths]="['60%', '40%']"
+        *ngFor="let i of [1,2,3,4,5,6]">
+      </app-skeleton>
+    </ng-container>
+
+    <ng-template #statsContent>
+      <app-stats-card [data]="{
+        title: 'Total Vehículos',
+        value: estadisticas.total || 0,
+        icon: 'fas fa-truck text-blue-600',
+        iconBgColor: 'bg-blue-100',
+        textColor: 'text-gray-900'
+      }"></app-stats-card>
+
+      <app-stats-card [data]="{
+        title: 'Activos',
+        value: estadisticas.activos || 0,
+        icon: 'fas fa-check-circle text-green-600',
+        iconBgColor: 'bg-green-100',
+        textColor: 'text-green-600'
+      }"></app-stats-card>
+
+      <app-stats-card [data]="{
+        title: 'Disponibles',
+        value: estadisticas.disponibles || 0,
+        icon: 'fas fa-circle-check text-blue-600',
+        iconBgColor: 'bg-blue-100',
+        textColor: 'text-blue-600'
+      }"></app-stats-card>
+
+      <app-stats-card [data]="{
+        title: 'Mantenimiento',
+        value: estadisticas.mantenimiento || 0,
+        icon: 'fas fa-exclamation-triangle text-yellow-600',
+        iconBgColor: 'bg-yellow-100',
+        textColor: 'text-yellow-600'
+      }"></app-stats-card>
+
+      <app-stats-card [data]="{
+        title: 'Seguros por Vencer',
+        value: estadisticas.segurosPorVencer || 0,
+        icon: 'fas fa-exclamation-circle text-red-600',
+        iconBgColor: 'bg-red-100',
+        textColor: 'text-red-600'
+      }"></app-stats-card>
+
+      <app-stats-card [data]="{
+        title: 'Revisiones por Vencer',
+        value: estadisticas.revisionesPorVencer || 0,
+        icon: 'fas fa-clock text-red-600',
+        iconBgColor: 'bg-red-100',
+        textColor: 'text-red-600'
+      }"></app-stats-card>
+    </ng-template>
+  </div>
+
+  <!-- Filtros -->
+  <div class="bg-white p-4 rounded-lg shadow border mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Placa</label>
+        <input
+          type="text"
+          [(ngModel)]="filtroPlaca"
+          (input)="aplicarFiltros()"
+          placeholder="Buscar por placa..."
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Marca</label>
+        <select
+          [(ngModel)]="filtroMarca"
+          (change)="aplicarFiltros()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <option value="">Todas las marcas</option>
+          <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
+        </select>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+        <select
+          [(ngModel)]="filtroTipo"
+          (change)="aplicarFiltros()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <option value="">Todos los tipos</option>
+          <option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</option>
+        </select>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+        <select
+          [(ngModel)]="filtroEstado"
+          (change)="aplicarFiltros()"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+          <option value="">Todos los estados</option>
+          <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="flex justify-end">
+      <button
+        (click)="limpiarFiltros()"
+        class="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors">
+        Limpiar Filtros
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla de Vehículos -->
+  <div class="bg-white rounded-lg shadow border overflow-hidden">
+    <!-- Mostrar skeleton mientras cargan los vehículos -->
+    <ng-container *ngIf="isLoadingVehiculos$ | async; else tableContent">
+      <app-skeleton 
+        type="table" 
+        [rows]="8" 
+        [columns]="6"
+        [columnWidths]="['35%', '15%', '20%', '10%', '10%', '10%']"
+        label="vehículos">
+      </app-skeleton>
+    </ng-container>
+
+    <ng-template #tableContent>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vehículo</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conductor</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Documentos</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let vehiculo of vehiculosFiltrados; trackBy: trackByVehiculo" class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ vehiculo.placa }}</div>
+                  <div class="text-sm text-gray-500">{{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.year }})</div>
+                  <div class="text-sm text-gray-500">Capacidad: {{ vehiculo.capacidad }} personas</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <app-badge [variant]="getTipoVariant(vehiculo.tipo)">
+                {{ vehiculo.tipo }}
+              </app-badge>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div *ngIf="vehiculo.conductorNombre; else sinConductor" class="text-sm text-gray-900">
+                {{ vehiculo.conductorNombre }}
+              </div>
+              <ng-template #sinConductor>
+                <span class="text-sm text-gray-500 italic">Sin asignar</span>
+              </ng-template>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <app-badge [variant]="getEstadoVariant(vehiculo.estado)">
+                {{ vehiculo.estado }}
+              </app-badge>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex flex-col space-y-1">
+                <!-- Seguro -->
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4" [class]="estaVencido(vehiculo.seguro.fechaVencimiento) ? 'text-red-500' : estaProximoAVencer(vehiculo.seguro.fechaVencimiento) ? 'text-yellow-500' : 'text-green-500'" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="text-xs" [class]="estaVencido(vehiculo.seguro.fechaVencimiento) ? 'text-red-600' : estaProximoAVencer(vehiculo.seguro.fechaVencimiento) ? 'text-yellow-600' : 'text-gray-600'">
+                    Seguro: {{ vehiculo.seguro.fechaVencimiento | date:'dd/MM/yyyy' }}
+                  </span>
+                </div>
+                <!-- Revisión Técnica -->
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4" [class]="estaVencido(vehiculo.revisionTecnica.fechaVencimiento) ? 'text-red-500' : estaProximoAVencer(vehiculo.revisionTecnica.fechaVencimiento) ? 'text-yellow-500' : 'text-green-500'" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="text-xs" [class]="estaVencido(vehiculo.revisionTecnica.fechaVencimiento) ? 'text-red-600' : estaProximoAVencer(vehiculo.revisionTecnica.fechaVencimiento) ? 'text-yellow-600' : 'text-gray-600'">
+                    RT: {{ vehiculo.revisionTecnica.fechaVencimiento | date:'dd/MM/yyyy' }}
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <div class="flex items-center space-x-2">
+                <button
+                  (click)="abrirModal(vehiculo)"
+                  class="text-indigo-600 hover:text-indigo-900 p-1 rounded transition-colors"
+                  title="Editar">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                </button>
+                
+                <button
+                  *ngIf="!vehiculo.conductorId"
+                  (click)="asignarConductor(vehiculo)"
+                  class="text-green-600 hover:text-green-900 p-1 rounded transition-colors"
+                  title="Asignar Conductor">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                  </svg>
+                </button>
+                
+                <button
+                  *ngIf="vehiculo.conductorId"
+                  (click)="desasignarConductor(vehiculo)"
+                  class="text-yellow-600 hover:text-yellow-900 p-1 rounded transition-colors"
+                  title="Desasignar Conductor">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
+                  </svg>
+                </button>
+                
+                <button
+                  (click)="eliminarVehiculo(vehiculo.id!)"
+                  class="text-red-600 hover:text-red-900 p-1 rounded transition-colors"
+                  title="Eliminar">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Estado vacío -->
+    <div *ngIf="vehiculosFiltrados.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No hay vehículos</h3>
+      <p class="mt-1 text-sm text-gray-500">No se encontraron vehículos con los filtros aplicados.</p>
+      <div class="mt-6">
+        <button
+          (click)="limpiarFiltros()"
+          class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+          Limpiar filtros
+        </button>
+      </div>
+    </div>
+    </ng-template>
+  </div>
+
+  <!-- Spinners para operaciones específicas -->
+  <div class="mt-6 space-y-4">
+    <!-- Spinner para operaciones -->
+    <div *ngIf="loadingState$ | async as loadingState" class="bg-white p-4 rounded-lg shadow border">
+      <div class="flex items-center space-x-4">
+        <app-loading-spinner
+          [type]="loadingState.loadingType === 'spinner' ? 'circular' : 'dots'"
+          [message]="loadingState.loadingMessage || 'Procesando...'"
+          [progress]="loadingState.progress"
+          [showProgress]="loadingState.loadingType === 'progress'"
+          [color]="'primary'"
+          [size]="30">
+        </app-loading-spinner>
+      </div>
+    </div>
+
+    <!-- Ejemplo de diferentes tipos de spinners -->
+    <div class="bg-gray-50 p-4 rounded-lg" *ngIf="false">
+      <h3 class="text-sm font-medium text-gray-700 mb-3">Estados de Carga Disponibles:</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="text-center p-3 bg-white rounded border">
+          <app-loading-spinner type="circular" message="Circular" [size]="24"></app-loading-spinner>
+        </div>
+        <div class="text-center p-3 bg-white rounded border">
+          <app-loading-spinner type="dots" message="Puntos" [size]="24"></app-loading-spinner>
+        </div>
+        <div class="text-center p-3 bg-white rounded border">
+          <app-loading-spinner type="bars" message="Barras" [size]="24"></app-loading-spinner>
+        </div>
+        <div class="text-center p-3 bg-white rounded border">
+          <app-loading-spinner type="pulse" message="Pulso" [size]="24"></app-loading-spinner>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<app-loading-overlay
+  [show]="showOverlay"
+  [message]="'Guardando cambios importantes...'"
+  [spinnerType]="'circular'"
+  [spinnerSize]="60"
+  [backdrop]="true"
+  [blur]="true"
+  [showCancelButton]="false"
+  [color]="'primary'">
+</app-loading-overlay>
+
+<!-- Modal -->
+<app-vehiculo-form-modal
+  [isVisible]="showModal"
+  [data]="vehiculoSeleccionado"
+  [editMode]="!!vehiculoSeleccionado"
+  (closeModal)="cerrarModal()"
+  (saveData)="onVehiculoGuardado($event)">
+</app-vehiculo-form-modal>

@@ -1,0 +1,13 @@
+<!-- src/app/shared/components/toast-container/toast-container.component.html -->
+<div class="toast-container-wrapper">
+  <div 
+    *ngFor="let toast of toasts; trackBy: trackByToastId" 
+    class="toast-wrapper"
+    [@fadeInOut]>
+    <app-toast
+      [notification]="toast"
+      (dismiss)="onDismiss($event)"
+      (actionClick)="onActionClick($event)">
+    </app-toast>
+  </div>
+</div>

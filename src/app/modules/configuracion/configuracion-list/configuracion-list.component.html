@@ -1,0 +1,157 @@
+<div class="configuracion-container">
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">
+      <i class="fas fa-cogs text-blue-600 mr-3"></i>
+      Configuración del Sistema
+    </h1>
+    <p class="text-gray-600">Administre las configuraciones generales del sistema de transporte</p>
+  </div>
+
+  <!-- Botones de Acción Principales -->
+  <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="flex flex-wrap gap-3">
+      <button (click)="guardarConfiguraciones()" 
+              class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+        <i class="fas fa-save mr-2"></i>
+        Guardar Cambios
+      </button>
+      <button (click)="restaurarDefecto()" 
+              class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg transition-colors">
+        <i class="fas fa-undo mr-2"></i>
+        Restaurar por Defecto
+      </button>
+      <button (click)="exportarConfiguracion()" 
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+        <i class="fas fa-download mr-2"></i>
+        Exportar
+      </button>
+      <label class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer">
+        <i class="fas fa-upload mr-2"></i>
+        Importar
+        <input type="file" (change)="importarConfiguracion($event)" accept=".json" class="hidden">
+      </label>
+    </div>
+  </div>
+
+  <!-- Selector de Categorías -->
+  <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="flex flex-wrap gap-2">
+      <button *ngFor="let categoria of categorias"
+              [class]="'px-4 py-2 rounded-lg font-medium transition-colors ' + 
+                      (categoriaSeleccionada === categoria ? 
+                       'bg-blue-600 text-white' : 
+                       'bg-gray-200 text-gray-700 hover:bg-gray-300')"
+              (click)="categoriaSeleccionada = categoria; onCategoriaChange()">
+        {{ categoria }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Configuraciones por Categoría -->
+  <div class="bg-white rounded-lg shadow-md">
+    <div class="p-6 border-b">
+      <h2 class="text-xl font-semibold text-gray-800">
+        Configuraciones de {{ categoriaSeleccionada }}
+      </h2>
+    </div>
+
+    <div class="p-6">
+      <div class="space-y-6">
+        <div *ngFor="let config of configuracionesFiltradas" 
+             class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+          
+          <!-- Header del Item -->
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center">
+              <i [class]="config.icono + ' text-blue-600 text-lg mr-3'"></i>
+              <div>
+                <h3 class="font-semibold text-gray-800">{{ config.nombre }}</h3>
+                <p class="text-sm text-gray-600">{{ config.descripcion }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Campo de Configuración -->
+          <div class="ml-8">
+            <!-- Input Text -->
+            <div *ngIf="config.tipo === 'text'" class="flex items-center space-x-3">
+              <label class="text-sm font-medium text-gray-700 w-20">Valor:</label>
+              <input type="text" 
+                     [value]="config.valor"
+                     (input)="onValorChange(config, $event)"
+                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Input Password -->
+            <div *ngIf="config.tipo === 'password'" class="flex items-center space-x-3">
+              <label class="text-sm font-medium text-gray-700 w-20">Valor:</label>
+              <input type="password" 
+                     [value]="config.valor"
+                     (input)="onValorChange(config, $event)"
+                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Input Number -->
+            <div *ngIf="config.tipo === 'number'" class="flex items-center space-x-3">
+              <label class="text-sm font-medium text-gray-700 w-20">Valor:</label>
+              <input type="number" 
+                     [value]="config.valor"
+                     (input)="onValorChange(config, $event)"
+                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Select -->
+            <div *ngIf="config.tipo === 'select'" class="flex items-center space-x-3">
+              <label class="text-sm font-medium text-gray-700 w-20">Valor:</label>
+              <select [value]="config.valor"
+                      (change)="onValorChange(config, $event)"
+                      class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option *ngFor="let opcion of config.opciones" [value]="opcion">
+                  {{ opcion }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Boolean Toggle -->
+            <div *ngIf="config.tipo === 'boolean'" class="flex items-center space-x-3">
+              <label class="text-sm font-medium text-gray-700 w-20">Estado:</label>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" 
+                       [checked]="config.valor"
+                       (change)="onValorChange(config, $event)"
+                       class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                <span class="ml-3 text-sm font-medium text-gray-700">
+                  {{ config.valor ? 'Habilitado' : 'Deshabilitado' }}
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Información del Sistema -->
+  <div class="mt-6 bg-gray-50 rounded-lg p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+      <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+      Información del Sistema
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+      <div>
+        <span class="font-medium text-gray-700">Versión:</span>
+        <span class="text-gray-600 ml-2">v1.0.0</span>
+      </div>
+      <div>
+        <span class="font-medium text-gray-700">Última Actualización:</span>
+        <span class="text-gray-600 ml-2">{{ fechaActual }}</span>
+      </div>
+      <div>
+        <span class="font-medium text-gray-700">Configuraciones:</span>
+        <span class="text-gray-600 ml-2">{{ configuraciones.length }} elementos</span>
+      </div>
+    </div>
+  </div>
+</div>

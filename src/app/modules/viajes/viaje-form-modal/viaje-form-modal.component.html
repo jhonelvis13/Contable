@@ -1,0 +1,9 @@
+﻿<app-form-modal
+  [isVisible]="isVisible"
+  [title]="modalTitle"
+  [form]="form"
+  [fields]="formFields"
+  [isEditing]="editMode"
+  (submit)="onSubmit($event)"
+  (cancel)="onCancel()">
+</app-form-modal>

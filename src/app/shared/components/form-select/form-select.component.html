@@ -1,0 +1,15 @@
+<!-- src/app/shared/components/form-select/form-select.component.html -->
+<div class="flex flex-col">
+  <label class="text-sm text-gray-600 mb-1">{{ label }}</label>
+  <select
+    [value]="value"
+    [disabled]="disabled"
+    (change)="onSelectChange($event)"
+    class="p-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+  >
+    <option value="">{{ placeholder }}</option>
+    <option *ngFor="let option of options" [value]="option.value || option">
+      {{ option.label || option }}
+    </option>
+  </select>
+</div>

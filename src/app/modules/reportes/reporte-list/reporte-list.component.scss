@@ -1,0 +1,181 @@
+// Estilos para el componente de reportes
+.report-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.report-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.category-filter {
+  transition: all 0.2s ease-in-out;
+}
+
+.category-filter.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.category-filter:not(.active):hover {
+  background-color: #f3f4f6;
+}
+
+.report-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.report-card:hover .report-icon {
+  transform: scale(1.1);
+}
+
+.export-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.export-button:hover {
+  transform: translateY(-1px);
+}
+
+.custom-report-item {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.custom-report-item:hover {
+  border-color: #3b82f6;
+  background-color: #f8fafc;
+}
+
+.period-filter {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.stats-section {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .report-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .custom-reports-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .report-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .custom-reports-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .category-filters {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .period-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .export-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .report-card {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .report-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .category-filter {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .report-card {
+    padding: 1rem;
+  }
+  
+  .report-title {
+    font-size: 1rem;
+  }
+  
+  .report-description {
+    font-size: 0.75rem;
+  }
+}
+
+// Animaciones
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+// Estados de carga
+.loading-state {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Efectos especiales para categorías
+.categoria-operaciones {
+  border-left: 4px solid #3b82f6;
+}
+
+.categoria-finanzas {
+  border-left: 4px solid #10b981;
+}
+
+.categoria-personal {
+  border-left: 4px solid #8b5cf6;
+}
+
+.categoria-flota {
+  border-left: 4px solid #f59e0b;
+}
+
+.categoria-comercial {
+  border-left: 4px solid #6366f1;
+}
+
+.categoria-socios {
+  border-left: 4px solid #eab308;
+}

@@ -1,0 +1,293 @@
+/* Variables de colores para diferentes tipos */
+:root {
+  --spinner-primary: #3b82f6;
+  --spinner-secondary: #6b7280;
+  --spinner-success: #10b981;
+  --spinner-warning: #f59e0b;
+  --spinner-error: #ef4444;
+  --spinner-info: #06b6d4;
+}
+
+/* Container principal */
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+/* Spinner base */
+.spinner {
+  display: inline-block;
+}
+
+/* Spinner circular (SVG) */
+.spinner-circular {
+  svg {
+    color: var(--spinner-primary);
+    animation: rotate 2s linear infinite;
+    
+    .spinner-path {
+      animation: dash 1.5s ease-in-out infinite;
+    }
+  }
+  
+  &.spinner-primary svg { color: var(--spinner-primary); }
+  &.spinner-secondary svg { color: var(--spinner-secondary); }
+  &.spinner-success svg { color: var(--spinner-success); }
+  &.spinner-warning svg { color: var(--spinner-warning); }
+  &.spinner-error svg { color: var(--spinner-error); }
+  &.spinner-info svg { color: var(--spinner-info); }
+}
+
+/* Spinner de puntos */
+.spinner-dots {
+  display: flex;
+  gap: 4px;
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--spinner-primary);
+    animation: dot-bounce 1.4s ease-in-out infinite both;
+    
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0s; }
+  }
+  
+  &.spinner-primary .dot { background-color: var(--spinner-primary); }
+  &.spinner-secondary .dot { background-color: var(--spinner-secondary); }
+  &.spinner-success .dot { background-color: var(--spinner-success); }
+  &.spinner-warning .dot { background-color: var(--spinner-warning); }
+  &.spinner-error .dot { background-color: var(--spinner-error); }
+  &.spinner-info .dot { background-color: var(--spinner-info); }
+}
+
+/* Spinner de barras */
+.spinner-bars {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  
+  .bar {
+    width: 4px;
+    height: 20px;
+    background-color: var(--spinner-primary);
+    animation: bar-stretch 1.2s ease-in-out infinite;
+    
+    &:nth-child(1) { animation-delay: -1.1s; }
+    &:nth-child(2) { animation-delay: -1.0s; }
+    &:nth-child(3) { animation-delay: -0.9s; }
+    &:nth-child(4) { animation-delay: -0.8s; }
+    &:nth-child(5) { animation-delay: -0.7s; }
+  }
+  
+  &.spinner-primary .bar { background-color: var(--spinner-primary); }
+  &.spinner-secondary .bar { background-color: var(--spinner-secondary); }
+  &.spinner-success .bar { background-color: var(--spinner-success); }
+  &.spinner-warning .bar { background-color: var(--spinner-warning); }
+  &.spinner-error .bar { background-color: var(--spinner-error); }
+  &.spinner-info .bar { background-color: var(--spinner-info); }
+}
+
+/* Spinner de pulso */
+.spinner-pulse {
+  .pulse-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--spinner-primary);
+    animation: pulse-scale 1s ease-in-out infinite;
+  }
+  
+  &.spinner-primary .pulse-circle { background-color: var(--spinner-primary); }
+  &.spinner-secondary .pulse-circle { background-color: var(--spinner-secondary); }
+  &.spinner-success .pulse-circle { background-color: var(--spinner-success); }
+  &.spinner-warning .pulse-circle { background-color: var(--spinner-warning); }
+  &.spinner-error .pulse-circle { background-color: var(--spinner-error); }
+  &.spinner-info .pulse-circle { background-color: var(--spinner-info); }
+}
+
+/* Mensaje de carga */
+.loading-message {
+  font-size: 14px;
+  color: #6b7280;
+  text-align: center;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+/* Barra de progreso */
+.progress-container {
+  width: 200px;
+  text-align: center;
+  
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--spinner-primary);
+      transition: width 0.3s ease;
+      border-radius: 3px;
+      
+      &.progress-primary { background-color: var(--spinner-primary); }
+      &.progress-secondary { background-color: var(--spinner-secondary); }
+      &.progress-success { background-color: var(--spinner-success); }
+      &.progress-warning { background-color: var(--spinner-warning); }
+      &.progress-error { background-color: var(--spinner-error); }
+      &.progress-info { background-color: var(--spinner-info); }
+    }
+  }
+  
+  .progress-text {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+}
+
+/* Animaciones */
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+@keyframes dot-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bar-stretch {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1.0);
+  }
+}
+
+@keyframes pulse-scale {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Variantes de tamaño */
+.spinner-sm {
+  .spinner-circular svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  .spinner-dots .dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .spinner-bars .bar {
+    width: 3px;
+    height: 15px;
+  }
+  
+  .spinner-pulse .pulse-circle {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.spinner-lg {
+  .spinner-circular svg {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .spinner-dots .dot {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .spinner-bars .bar {
+    width: 6px;
+    height: 30px;
+  }
+  
+  .spinner-pulse .pulse-circle {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Estados de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .spinner-circular svg,
+  .spinner-dots .dot,
+  .spinner-bars .bar,
+  .spinner-pulse .pulse-circle {
+    animation: none;
+  }
+  
+  .spinner-circular svg {
+    color: var(--spinner-primary);
+  }
+  
+  .spinner-dots .dot,
+  .spinner-bars .bar {
+    opacity: 0.6;
+  }
+  
+  .spinner-pulse .pulse-circle {
+    opacity: 0.8;
+  }
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  .loading-message {
+    color: #d1d5db;
+  }
+  
+  .progress-container {
+    .progress-bar {
+      background-color: #374151;
+    }
+    
+    .progress-text {
+      color: #d1d5db;
+    }
+  }
+}

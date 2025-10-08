@@ -1,0 +1,31 @@
+/* Estilos específicos para el componente de login */
+.login-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-form {
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.input-field:focus {
+  transform: translateY(-2px);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-login {
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dev-button {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+}
+
+.dev-button:hover {
+  background: linear-gradient(45deg, #ee5a52, #ff6b6b);
+}

@@ -1,0 +1,43 @@
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #f3f4f6;">
+  <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 400px;">
+    <h1 style="text-align: center; margin-bottom: 2rem; color: #1f2937;">Sistema de Transporte - Login</h1>
+    
+    <div style="margin-bottom: 1rem;">
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Usuario:</label>
+      <input 
+        type="text" 
+        [(ngModel)]="username"
+        name="username"
+        style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 4px;"
+        placeholder="Ingresa tu usuario">
+    </div>
+    
+    <div style="margin-bottom: 1rem;">
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Contraseña:</label>
+      <input 
+        type="password" 
+        [(ngModel)]="password"
+        name="password"
+        style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 4px;"
+        placeholder="Ingresa tu contraseña">
+    </div>
+    
+    <button 
+      (click)="login()"
+      style="width: 100%; padding: 0.75rem; background-color: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 1rem;">
+      Iniciar Sesión
+    </button>
+
+    <hr style="margin: 1rem 0;">
+    
+    <button 
+      (click)="devLogin()"
+      style="width: 100%; padding: 0.75rem; background-color: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 0.5rem;">
+      🚀 Acceso Directo al Dashboard
+    </button>
+    
+    <p style="text-align: center; font-size: 0.875rem; color: #6b7280;">
+      Haz click para ir directo al dashboard (solo desarrollo)
+    </p>
+  </div>
+</div>

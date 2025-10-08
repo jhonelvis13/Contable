@@ -1,0 +1,54 @@
+/* Badge Component Styles */
+.badge {
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  transform: scale(1.05);
+}
+
+/* Variantes adicionales para estados específicos */
+.badge-pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.badge-pagado {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-parcial {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-activo {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-inactivo {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-disponible {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-mantenimiento {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.badge-vencido {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-vigente {
+  background-color: #d1fae5;
+  color: #065f46;
+}

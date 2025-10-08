@@ -1,0 +1,124 @@
+// src/app/shared/components/toast-container/toast-container.component.scss
+.toast-container-wrapper {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toast-wrapper {
+  pointer-events: auto;
+  transform-origin: right top;
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+// Animaciones
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+// Posiciones alternativas (para futuro)
+.toast-container-wrapper.position-top-left {
+  top: 1rem;
+  left: 1rem;
+  right: auto;
+
+  .toast-wrapper {
+    transform-origin: left top;
+    animation: slideInFromLeft 0.3s ease-out;
+  }
+}
+
+.toast-container-wrapper.position-bottom-right {
+  top: auto;
+  bottom: 1rem;
+  right: 1rem;
+  flex-direction: column-reverse;
+
+  .toast-wrapper {
+    transform-origin: right bottom;
+  }
+}
+
+.toast-container-wrapper.position-bottom-left {
+  top: auto;
+  bottom: 1rem;
+  left: 1rem;
+  right: auto;
+  flex-direction: column-reverse;
+
+  .toast-wrapper {
+    transform-origin: left bottom;
+  }
+}
+
+.toast-container-wrapper.position-top-center {
+  top: 1rem;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+
+  .toast-wrapper {
+    transform-origin: center top;
+  }
+}
+
+.toast-container-wrapper.position-bottom-center {
+  top: auto;
+  bottom: 1rem;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  flex-direction: column-reverse;
+
+  .toast-wrapper {
+    transform-origin: center bottom;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+// Responsive
+@media (max-width: 640px) {
+  .toast-container-wrapper {
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+  }
+
+  .toast-wrapper {
+    transform-origin: center top;
+  }
+}

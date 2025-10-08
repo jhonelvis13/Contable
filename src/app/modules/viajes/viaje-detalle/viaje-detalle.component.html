@@ -1,0 +1,119 @@
+<div class="p-6" *ngIf="!loading">
+  <div class="mb-6 flex justify-between items-center">
+    <div>
+      <h2 class="text-2xl font-semibold text-gray-900">Detalle del Viaje #{{viaje.id}}</h2>
+      <p class="text-gray-600">Información completa del viaje</p>
+    </div>
+    <div class="space-x-2">
+      <button 
+        (click)="goBack()" 
+        class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+        Volver
+      </button>
+      <button 
+        (click)="editViaje()" 
+        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+        Editar
+      </button>
+      <button 
+        (click)="printViaje()" 
+        class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+        Imprimir
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Información General -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-lg font-medium mb-4 text-gray-900">Información General</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Tipo:</span>
+          <span class="font-medium">{{viaje.tipo}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Cliente:</span>
+          <span class="font-medium">{{viaje.cliente}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Conductor:</span>
+          <span class="font-medium">{{viaje.conductor}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Vehículo:</span>
+          <span class="font-medium">{{viaje.vehiculo}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Estado:</span>
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': viaje.estado === 'Completado',
+                  'bg-yellow-100 text-yellow-800': viaje.estado === 'Pendiente',
+                  'bg-red-100 text-red-800': viaje.estado === 'Cancelado'
+                }">
+            {{viaje.estado}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información del Viaje -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-lg font-medium mb-4 text-gray-900">Ruta y Fechas</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Origen:</span>
+          <span class="font-medium">{{viaje.origen}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Destino:</span>
+          <span class="font-medium">{{viaje.destino}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Fecha Salida:</span>
+          <span class="font-medium">{{viaje.fechaSalida | date:'medium'}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Fecha Llegada:</span>
+          <span class="font-medium">{{viaje.fechaLlegada | date:'medium'}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información Financiera -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-lg font-medium mb-4 text-gray-900">Información Financiera</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Monto Total:</span>
+          <span class="font-medium text-lg">${{viaje.monto}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Anticipo:</span>
+          <span class="font-medium text-green-600">${{viaje.anticipo}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Saldo Pendiente:</span>
+          <span class="font-medium text-orange-600">${{viaje.saldo}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Observaciones -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-lg font-medium mb-4 text-gray-900">Observaciones</h3>
+      <div class="text-gray-700">
+        <p *ngIf="viaje.observaciones; else noObservaciones">{{viaje.observaciones}}</p>
+        <ng-template #noObservaciones>
+          <p class="text-gray-400 italic">Sin observaciones registradas</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="flex justify-center items-center h-64">
+  <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+</div>

@@ -1,0 +1,107 @@
+<div class="p-6">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Viajes</h1>
+    <button
+      (click)="openNewViajeModal()"
+      class="bg-black text-white px-4 py-2 rounded-2xl hover:bg-gray-800 transition-all duration-300">
+      + Nuevo Viaje
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div>
+      <label class="text-sm text-gray-600 mb-1 block">Estado</label>
+      <select
+        [value]="estadoFilter"
+        (change)="onEstadoFilterChange($event)"
+        class="w-full p-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+        <option value="">Todos</option>
+        <option value="Pendiente">Pendiente</option>
+        <option value="En curso">En curso</option>
+        <option value="Finalizado">Finalizado</option>
+        <option value="Cancelado">Cancelado</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="text-sm text-gray-600 mb-1 block">Tipo</label>
+      <select
+        [value]="tipoFilter"
+        (change)="onTipoFilterChange($event)"
+        class="w-full p-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+        <option value="">Todos</option>
+        <option value="Nacional">Nacional</option>
+        <option value="Internacional">Internacional</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white rounded-2xl shadow-md p-6">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto Total</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pendiente</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conductor</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vehículo</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let viaje of filteredViajes" class="hover:bg-gray-50 cursor-pointer" (click)="viewDetalle(viaje)">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{{ viaje.id }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ viaje.clienteNombre }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ viaje.producto }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                    [class]="viaje.tipo === 'Internacional' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'">
+                {{ viaje.tipo }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatCurrency(viaje.montoTotal) }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatCurrency(viaje.montoPendiente) }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ viaje.conductorNombre }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ viaje.vehiculoPlaca }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-800': viaje.estado === 'Pendiente',
+                      'bg-blue-100 text-blue-800': viaje.estado === 'En curso',
+                      'bg-green-100 text-green-800': viaje.estado === 'Finalizado',
+                      'bg-red-100 text-red-800': viaje.estado === 'Cancelado'
+                    }">
+                {{ viaje.estado }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <button (click)="viewDetalle(viaje); $event.stopPropagation()" 
+                      class="text-blue-600 hover:text-blue-900 mr-4">Ver</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- New Viaje Modal -->
+<div *ngIf="showNewViajeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
+    <h3 class="text-lg font-bold mb-4">Nuevo Viaje</h3>
+    <p>Formulario de viaje en desarrollo...</p>
+    <button
+      (click)="closeNewViajeModal()"
+      class="mt-4 px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-800">
+      Cerrar
+    </button>
+  </div>
+</div>

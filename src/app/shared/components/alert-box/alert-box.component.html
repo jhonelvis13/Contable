@@ -1,0 +1,4 @@
+<div *ngIf="message" [class]="'border-l-4 p-4 ' + alertClasses" role="alert">
+  <p class="font-bold">{{ type | titlecase }}</p>
+  <p>{{ message }}</p>
+</div>

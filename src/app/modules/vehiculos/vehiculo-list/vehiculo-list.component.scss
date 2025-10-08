@@ -1,0 +1,24 @@
+// Estilos limpios para el componente de vehículos
+// Solo CSS estándar - sin directivas @apply
+
+.action-button {
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.action-button:hover {
+  background-color: #f3f4f6;
+}
+
+.document-expired {
+  color: #dc2626;
+}
+
+.document-expiring {
+  color: #d97706;
+}
+
+.document-valid {
+  color: #059669;
+}

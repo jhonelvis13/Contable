@@ -1,0 +1,193 @@
+.configuracion-container {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Animaciones para transiciones suaves
+.transition-colors {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.transition-shadow {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+// Estilos para los botones de categoría
+.categoria-button {
+  &.active {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  }
+}
+
+// Estilos para los items de configuración
+.config-item {
+  &:hover {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+  }
+}
+
+// Toggle switch personalizado
+.toggle-switch {
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+    
+    &:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+  
+  input {
+    &:checked + .slider {
+      background-color: #3b82f6;
+    }
+    
+    &:checked + .slider:before {
+      transform: translateX(20px);
+    }
+  }
+}
+
+// Estilos responsivos
+@media (max-width: 768px) {
+  .configuracion-container {
+    padding: 1rem;
+  }
+  
+  .config-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    
+    button, label {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// Iconos con color y espaciado
+.config-icon {
+  color: #3b82f6;
+  font-size: 1.125rem;
+  margin-right: 0.75rem;
+  min-width: 1.5rem;
+}
+
+// Campos de entrada mejorados
+.config-input {
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+}
+
+// Botones de acción con efectos hover
+.action-btn {
+  &.save {
+    &:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+    }
+  }
+  
+  &.reset {
+    &:hover {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.4);
+    }
+  }
+  
+  &.export {
+    &:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+  }
+  
+  &.import {
+    &:hover {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+    }
+  }
+}
+
+// Información del sistema
+.system-info {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border: 1px solid #e2e8f0;
+  
+  .info-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e2e8f0;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// Estados de validación
+.config-field {
+  &.invalid {
+    .config-input {
+      border-color: #ef4444;
+      &:focus {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      }
+    }
+  }
+  
+  &.valid {
+    .config-input {
+      border-color: #10b981;
+      &:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      }
+    }
+  }
+}
+
+// Loader/spinner para operaciones
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

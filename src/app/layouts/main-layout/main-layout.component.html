@@ -1,0 +1,85 @@
+<div class="flex h-screen bg-gray-100 font-sans">
+  <!-- Overlay for mobile when sidebar is open -->
+  <div *ngIf="!sidebarCollapsed" 
+       class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+       (click)="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside [class]="'flex-shrink-0 bg-gray-800 text-white flex flex-col transition-all duration-300 z-40 ' + 
+                  (sidebarCollapsed ? 'w-16' : 'w-64')"
+         [style.height]="'100vh'"
+         [ngClass]="{'fixed lg:relative': !sidebarCollapsed}">
+    <!-- Header -->
+    <div class="h-16 flex items-center justify-center border-b border-gray-700 relative">
+      <span *ngIf="!sidebarCollapsed" class="text-2xl font-bold">SRL-TRANS</span>
+      <span *ngIf="sidebarCollapsed" class="text-lg font-bold">ST</span>
+      
+      <!-- Toggle Button -->
+      <button 
+        (click)="toggleSidebar()"
+        class="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-gray-800 border-2 border-gray-600 rounded-full w-6 h-6 flex items-center justify-center hover:bg-gray-700 transition-colors">
+        <mat-icon class="text-xs">{{ sidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-grow mt-4">
+      <ul>
+        <li *ngFor="let item of menuItems" [class]="sidebarCollapsed ? 'px-2 py-2' : 'px-4 py-2'">
+          <a [routerLink]="item.path" 
+             routerLinkActive="bg-gray-700"
+             [class]="'flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200 ' + (sidebarCollapsed ? 'justify-center' : '')"
+             [title]="sidebarCollapsed ? item.name : ''">
+            <mat-icon [class]="sidebarCollapsed ? '' : 'mr-3'">{{ item.icon }}</mat-icon>
+            <span *ngIf="!sidebarCollapsed" class="whitespace-nowrap">{{ item.name }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Footer -->
+    <div [class]="'border-t border-gray-700 ' + (sidebarCollapsed ? 'p-2' : 'p-4')">
+      <a href="#" 
+         [class]="'flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200 ' + (sidebarCollapsed ? 'justify-center' : '')"
+         [title]="sidebarCollapsed ? 'Cerrar Sesión' : ''">
+        <mat-icon [class]="sidebarCollapsed ? '' : 'mr-3'">exit_to_app</mat-icon>
+        <span *ngIf="!sidebarCollapsed">Cerrar Sesión</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Navbar -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+      <!-- Left side - Menu toggle -->
+      <div class="flex items-center">
+        <button 
+          (click)="toggleSidebar()"
+          class="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors">
+          <mat-icon>{{ sidebarCollapsed ? 'menu' : 'menu_open' }}</mat-icon>
+        </button>
+        <h1 class="ml-3 text-lg font-semibold text-gray-800">Panel de Control</h1>
+      </div>
+
+      <!-- Right side - Notifications and User -->
+      <div class="flex items-center">
+        <button class="mr-4 p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <div class="flex items-center">
+          <img class="h-8 w-8 rounded-full object-cover mr-2" src="https://via.placeholder.com/150" alt="User avatar">
+          <span class="text-gray-700 font-medium">Nombre Usuario</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="flex-1 overflow-y-auto p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <app-toast-container></app-toast-container>
+</div>

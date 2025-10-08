@@ -1,0 +1,221 @@
+<div class="anticipo-container">
+  <!-- Header -->
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">
+      <i class="fas fa-money-bill-wave text-green-600 mr-3"></i>
+      Gestión de Anticipos
+    </h1>
+    <p class="text-gray-600">Administre los anticipos de empresa y socios del sistema de transporte</p>
+  </div>
+
+  <!-- Botón Nuevo Anticipo -->
+  <div class="mb-6">
+    <button (click)="openModal()" 
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+      <i class="fas fa-plus mr-2"></i>
+      Nuevo Anticipo
+    </button>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <!-- Total de Anticipos -->
+    <app-stats-card [data]="{
+      title: 'Total de Anticipos',
+      value: filteredAnticipos.length,
+      icon: 'fas fa-list text-blue-600',
+      iconBgColor: 'bg-blue-100',
+      textColor: 'text-blue-600'
+    }"></app-stats-card>
+
+    <!-- Monto Total Pendiente -->
+    <app-stats-card [data]="{
+      title: 'Total Pendiente',
+      value: formatCurrency(getTotalPendiente()),
+      icon: 'fas fa-clock text-yellow-600',
+      iconBgColor: 'bg-yellow-100',
+      textColor: 'text-yellow-600'
+    }"></app-stats-card>
+
+    <!-- Monto Total Pagado -->
+    <app-stats-card [data]="{
+      title: 'Total Pagado',
+      value: formatCurrency(getTotalPagado()),
+      icon: 'fas fa-check text-green-600',
+      iconBgColor: 'bg-green-100',
+      textColor: 'text-green-600'
+    }"></app-stats-card>
+
+    <!-- Anticipos Empresa -->
+    <app-stats-card [data]="{
+      title: 'Anticipos de Empresa',
+      value: getCountByTipo('Empresa'),
+      icon: 'fas fa-building text-purple-600',
+      iconBgColor: 'bg-purple-100',
+      textColor: 'text-purple-600'
+    }"></app-stats-card>
+  </div>
+
+  <!-- Más estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <!-- Anticipos Socios -->
+    <app-stats-card [data]="{
+      title: 'Anticipos de Socios',
+      value: getCountByTipo('Socio'),
+      icon: 'fas fa-users text-orange-600',
+      iconBgColor: 'bg-orange-100',
+      textColor: 'text-orange-600'
+    }"></app-stats-card>
+
+    <!-- Estados Específicos -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <span class="text-sm text-gray-600">Pendientes:</span>
+          <span class="font-medium text-yellow-600">{{ getCountByEstado('Pendiente') }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-sm text-gray-600">Pagados:</span>
+          <span class="font-medium text-green-600">{{ getCountByEstado('Pagado') }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-sm text-gray-600">Parciales:</span>
+          <span class="font-medium text-blue-600">{{ getCountByEstado('Parcial') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen General -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <span class="text-sm text-gray-600">Total Registros:</span>
+          <span class="font-medium text-blue-600">{{ filteredAnticipos.length }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-sm text-gray-600">Empresas:</span>
+          <span class="font-medium text-purple-600">{{ getCountByTipo('Empresa') }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-sm text-gray-600">Socios:</span>
+          <span class="font-medium text-orange-600">{{ getCountByTipo('Socio') }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Filtrar por Tipo:</label>
+        <select [(ngModel)]="tipoFilter" (ngModelChange)="onTipoFilterChange()" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Todos los tipos</option>
+          <option value="Empresa">Empresa</option>
+          <option value="Socio">Socio</option>
+        </select>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Filtrar por Estado:</label>
+        <select [(ngModel)]="estadoFilter" (ngModelChange)="onEstadoFilterChange()" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Todos los estados</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Parcial">Parcial</option>
+          <option value="Pagado">Pagado</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Anticipos -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              ID
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Tipo
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Beneficiario
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Monto Total
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Monto Pagado
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Estado
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Fecha
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Acciones
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let anticipo of filteredAnticipos" class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              #{{ anticipo.id }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <app-badge [variant]="anticipo.tipo === 'Empresa' ? 'primary' : 'warning'" size="sm">
+                {{ anticipo.tipo }}
+              </app-badge>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ anticipo.beneficiario }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ formatCurrency(anticipo.montoTotal) }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ formatCurrency(anticipo.montoPagado) }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <app-badge [variant]="getBadgeVariant(anticipo.estado)" size="sm">
+                {{ anticipo.estado }}
+              </app-badge>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ anticipo.fechaSolicitud | date:'dd/MM/yyyy' }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <button (click)="openModal(anticipo)" 
+                      class="text-blue-600 hover:text-blue-900 mr-3">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="text-red-600 hover:text-red-900">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mensaje cuando no hay datos -->
+    <div *ngIf="filteredAnticipos.length === 0" class="text-center py-12">
+      <i class="fas fa-inbox text-gray-400 text-4xl mb-4"></i>
+      <p class="text-gray-500 text-lg">No se encontraron anticipos</p>
+      <p class="text-gray-400">Ajuste los filtros o agregue un nuevo anticipo</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Component -->
+<app-anticipo-form-modal
+  *ngIf="showModal"
+  [anticipo]="selectedAnticipo"
+  (close)="closeModal()"
+  (save)="onAnticipoSaved()">
+</app-anticipo-form-modal>

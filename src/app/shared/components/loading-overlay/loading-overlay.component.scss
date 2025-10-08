@@ -1,0 +1,208 @@
+/* src/app/shared/components/loading-overlay/loading-overlay.component.scss */
+
+/* Overlay principal */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  
+  /* Animación de entrada */
+  animation: fadeIn 0.2s ease-out;
+  
+  /* Por defecto sin backdrop */
+  background-color: transparent;
+  
+  /* Con backdrop */
+  &.overlay-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(0px);
+    transition: backdrop-filter 0.2s ease;
+  }
+  
+  /* Con efecto blur */
+  &.overlay-blur {
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Contenido del overlay */
+.overlay-content {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-width: 200px;
+  max-width: 400px;
+  margin: 0 20px;
+  
+  /* Animación del contenido */
+  animation: slideIn 0.3s ease-out;
+  
+  /* Responsivo */
+  @media (max-width: 480px) {
+    padding: 24px;
+    margin: 0 16px;
+  }
+}
+
+/* Botón de cancelar */
+.cancel-button {
+  background: transparent;
+  border: 2px solid #e5e7eb;
+  color: #6b7280;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  
+  &:hover:not(:disabled) {
+    border-color: #d1d5db;
+    background-color: #f9fafb;
+    color: #374151;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Variantes de contenido */
+.overlay-content.content-compact {
+  padding: 24px;
+  min-width: 150px;
+}
+
+.overlay-content.content-large {
+  padding: 40px;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.overlay-content.content-full {
+  width: 90vw;
+  max-width: 600px;
+  height: auto;
+  max-height: 80vh;
+}
+
+/* Estados de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .loading-overlay,
+  .overlay-content {
+    animation: none;
+  }
+  
+  .overlay-backdrop {
+    transition: none;
+  }
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  .loading-overlay {
+    &.overlay-backdrop {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+  
+  .overlay-content {
+    background: #1f2937;
+    color: #f9fafb;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .cancel-button {
+    border-color: #4b5563;
+    color: #d1d5db;
+    
+    &:hover:not(:disabled) {
+      border-color: #6b7280;
+      background-color: #374151;
+      color: #f3f4f6;
+    }
+    
+    &:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+  }
+}
+
+/* Z-index específicos para diferentes contextos */
+.overlay-modal {
+  z-index: 10000;
+}
+
+.overlay-toast {
+  z-index: 10001;
+}
+
+.overlay-tooltip {
+  z-index: 10002;
+}
+
+/* Estilos para diferentes tipos de overlay */
+.overlay-success {
+  .overlay-content {
+    border-left: 4px solid #10b981;
+  }
+}
+
+.overlay-warning {
+  .overlay-content {
+    border-left: 4px solid #f59e0b;
+  }
+}
+
+.overlay-error {
+  .overlay-content {
+    border-left: 4px solid #ef4444;
+  }
+}
+
+.overlay-info {
+  .overlay-content {
+    border-left: 4px solid #06b6d4;
+  }
+}

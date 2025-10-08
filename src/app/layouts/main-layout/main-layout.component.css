@@ -1,0 +1,68 @@
+/* Estilo para el enlace activo en el sidebar */
+.bg-gray-700 {
+  background-color: #4a5568; /* Un gris un poco más claro que el fondo del sidebar */
+}
+
+/* Transiciones suaves para el sidebar */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Estilo para el botón de toggle */
+.toggle-btn {
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Tooltip para iconos cuando el sidebar está colapsado */
+[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #1f2937;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  z-index: 20;
+  margin-left: 0.5rem;
+}
+
+/* Responsive - en móviles el sidebar se superpone */
+@media (max-width: 1024px) {
+  .sidebar-collapsed {
+    position: fixed;
+    z-index: 40;
+    height: 100vh;
+  }
+  
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 30;
+  }
+}
+
+/* Animación para los iconos */
+.mat-icon {
+  transition: transform 0.2s ease;
+}
+
+.mat-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Estilo mejorado para el navbar */
+header {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}

@@ -1,0 +1,16 @@
+<!-- Usando el componente universal de formulario -->
+<app-form-modal
+  [isVisible]="isVisible"
+  [form]="clienteForm"
+  [fields]="formFields"
+  [title]="data ? 'Editar Cliente' : 'Nuevo Cliente'"
+  [subtitle]="data ? 'Actualizar información del cliente' : 'Registrar nuevo cliente en el sistema'"
+  [headerIcon]="'fas fa-user-tie'"
+  [isLoading]="isLoading"
+  [loadingText]="data ? 'Actualizando cliente...' : 'Creando cliente...'"
+  [submitText]="data ? 'Actualizar Cliente' : 'Crear Cliente'"
+  [cancelText]="'Cancelar'"
+  [isEditing]="!!data"
+  (submit)="onSubmit($event)"
+  (cancel)="onCancel()">
+</app-form-modal>

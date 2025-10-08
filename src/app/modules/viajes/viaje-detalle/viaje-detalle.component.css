@@ -1,0 +1,39 @@
+/* Estilos específicos para el componente de detalle de viaje */
+.detail-card {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.detail-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.info-row {
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12px;
+  }
+  
+  .p-6 {
+    padding: 1rem;
+  }
+}
+
+.loading-spinner {
+  border-color: #e5e7eb;
+  border-top-color: #3b82f6;
+}

@@ -1,0 +1,35 @@
+/* Stats Card Component Styles */
+.stats-card {
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes countUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count {
+  animation: countUp 0.6s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .stats-card {
+    padding: 1rem;
+  }
+  
+  .stats-card .text-2xl {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,356 @@
+/* src/app/shared/components/skeleton/skeleton.component.scss */
+
+/* Variables para animación y colores */
+$skeleton-base-color: #e2e8f0;
+$skeleton-highlight-color: #f1f5f9;
+$skeleton-animation-duration: 1.5s;
+$skeleton-border-radius: 4px;
+
+/* Animación de skeleton shimmer */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+/* Clase base para elementos skeleton */
+.skeleton-base {
+  background: linear-gradient(
+    90deg,
+    $skeleton-base-color 25%,
+    $skeleton-highlight-color 50%,
+    $skeleton-base-color 75%
+  );
+  background-size: 200px 100%;
+  animation: skeleton-shimmer $skeleton-animation-duration infinite;
+  border-radius: $skeleton-border-radius;
+}
+
+/* Container principal */
+.skeleton-container {
+  width: 100%;
+  
+  /* Accesibilidad */
+  &[aria-label] {
+    position: relative;
+  }
+}
+
+/* Skeleton para tablas */
+.skeleton-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  .skeleton-table-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 12px 16px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    
+    .skeleton-table-header-cell {
+      @extend .skeleton-base;
+      height: 16px;
+      min-width: 80px;
+    }
+  }
+  
+  .skeleton-table-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 4px;
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .skeleton-table-cell {
+      @extend .skeleton-base;
+      height: 14px;
+      min-width: 60px;
+    }
+  }
+}
+
+/* Skeleton para cards */
+.skeleton-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  .skeleton-card-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 12px;
+    
+    .skeleton-avatar {
+      @extend .skeleton-base;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    
+    .skeleton-card-header-content {
+      flex: 1;
+      
+      .skeleton-title {
+        height: 16px;
+        width: 60%;
+        margin-bottom: 8px;
+      }
+      
+      .skeleton-subtitle {
+        height: 14px;
+        width: 40%;
+      }
+    }
+  }
+  
+  .skeleton-card-content {
+    padding: 0 16px 16px;
+    
+    .skeleton-line {
+      @extend .skeleton-base;
+      height: 14px;
+      margin-bottom: 8px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  .skeleton-card-actions {
+    display: flex;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    
+    .skeleton-button {
+      @extend .skeleton-base;
+      height: 32px;
+      width: 80px;
+      border-radius: 6px;
+    }
+  }
+}
+
+/* Skeleton para listas */
+.skeleton-list {
+  .skeleton-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .skeleton-avatar {
+      @extend .skeleton-base;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    
+    .skeleton-list-content {
+      flex: 1;
+      
+      .skeleton-title {
+        height: 16px;
+        width: 70%;
+        margin-bottom: 6px;
+      }
+      
+      .skeleton-subtitle {
+        height: 14px;
+        width: 50%;
+        margin-bottom: 4px;
+      }
+      
+      .skeleton-description {
+        height: 12px;
+        width: 85%;
+      }
+      
+      .skeleton-line {
+        @extend .skeleton-base;
+        margin-bottom: 4px;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+    
+    .skeleton-list-actions {
+      display: flex;
+      gap: 8px;
+      
+      .skeleton-button-small {
+        @extend .skeleton-base;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+/* Skeleton para texto */
+.skeleton-text {
+  .skeleton-line {
+    @extend .skeleton-base;
+    height: 16px;
+    margin-bottom: 8px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/* Skeleton personalizado */
+.skeleton-custom {
+  /* Los elementos personalizados pueden usar la clase skeleton-base */
+  
+  .skeleton-element {
+    @extend .skeleton-base;
+  }
+  
+  /* Variantes de altura */
+  .skeleton-sm {
+    height: 12px;
+  }
+  
+  .skeleton-md {
+    height: 16px;
+  }
+  
+  .skeleton-lg {
+    height: 20px;
+  }
+  
+  .skeleton-xl {
+    height: 24px;
+  }
+  
+  /* Variantes de forma */
+  .skeleton-circle {
+    border-radius: 50%;
+  }
+  
+  .skeleton-rounded {
+    border-radius: 8px;
+  }
+  
+  .skeleton-square {
+    border-radius: 0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .skeleton-table {
+    .skeleton-table-header,
+    .skeleton-table-row {
+      padding: 8px 12px;
+      gap: 8px;
+    }
+  }
+  
+  .skeleton-card {
+    .skeleton-card-header {
+      padding: 12px;
+      
+      .skeleton-avatar {
+        width: 40px;
+        height: 40px;
+      }
+    }
+    
+    .skeleton-card-content {
+      padding: 0 12px 12px;
+    }
+    
+    .skeleton-card-actions {
+      padding: 12px;
+    }
+  }
+  
+  .skeleton-list {
+    .skeleton-list-item {
+      padding: 8px 12px;
+      gap: 8px;
+      
+      .skeleton-avatar {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+}
+
+/* Estados de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-base {
+    animation: none;
+    background: $skeleton-base-color;
+  }
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  .skeleton-container {
+    $skeleton-base-color: #374151;
+    $skeleton-highlight-color: #4b5563;
+    
+    .skeleton-base {
+      background: linear-gradient(
+        90deg,
+        $skeleton-base-color 25%,
+        $skeleton-highlight-color 50%,
+        $skeleton-base-color 75%
+      );
+    }
+    
+    .skeleton-card {
+      background: #1f2937;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      
+      .skeleton-card-actions {
+        background-color: #111827;
+        border-top-color: #374151;
+      }
+    }
+    
+    .skeleton-table {
+      .skeleton-table-header {
+        background-color: #111827;
+      }
+      
+      .skeleton-table-row {
+        border-bottom-color: #374151;
+      }
+    }
+    
+    .skeleton-list {
+      .skeleton-list-item {
+        border-bottom-color: #374151;
+      }
+    }
+  }
+}
